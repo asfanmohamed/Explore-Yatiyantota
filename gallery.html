@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Explore Yatiyantota — Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Modern Gallery Styles */
+    body {
+      background: #f8fafc;
+    }
+
+    .section {
+      padding: 4rem 0;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lead {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #64748b;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+
+    /* Modern Gallery Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px 0;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: white;
+      cursor: pointer;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .gimg {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover .gimg {
+      transform: scale(1.05);
+    }
+
+    .image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      padding: 2rem 1.5rem 1.5rem;
+      color: white;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover .image-overlay {
+      transform: translateY(0);
+    }
+
+    .image-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .image-location {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .image-location i {
+      font-size: 0.8rem;
+    }
+
+    /* Filter Buttons */
+    .gallery-filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.8rem 1.5rem;
+      border: 2px solid #e2e8f0;
+      background: white;
+      color: #64748b;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Enhanced Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox.active {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .lightbox.active .lightbox-content {
+      transform: scale(1);
+    }
+
+    .lb-close, .lb-prev, .lb-next {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lb-close:hover, .lb-prev:hover, .lb-next:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    .lb-close {
+      top: 2rem;
+      right: 2rem;
+    }
+
+    .lb-prev {
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lb-next {
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lightbox-info {
+      position: absolute;
+      bottom: 2rem;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: white;
+      padding: 1rem;
+    }
+
+    .lightbox-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox-counter {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    /* Loading Animation */
+    .gallery-item {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+      }
+      
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .gallery-filters {
+        gap: 0.5rem;
+      }
+      
+      .filter-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+      
+      .lb-close, .lb-prev, .lb-next {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">Explore <span>Yatiyantota</span></a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="attractions.html">Attractions</a>
+        <a href="gallery.html" class="active">Gallery</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="btn">Contact</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <h1>Photo Gallery</h1>
+        <p class="lead">Discover the beauty of Yatiyantota through our visual journey</p>
+
+        <!-- Filter Buttons -->
+        <div class="gallery-filters">
+          <button class="filter-btn active" data-filter="all">All Photos</button>
+          <button class="filter-btn" data-filter="nature">Nature</button>
+          <button class="filter-btn" data-filter="waterfalls">Waterfalls</button>
+          <button class="filter-btn" data-filter="temples">Temples</button>
+          <button class="filter-btn" data-filter="adventure">Adventure</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- Images will be dynamically loaded -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Enhanced Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lb-close" aria-label="Close"><i class="fas fa-times"></i></button>
+    <button class="lb-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <img id="lb-img" src="" alt="enlarged image" class="lightbox-content">
+    <button class="lb-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+    <div class="lightbox-info">
+      <div class="lightbox-title" id="lb-title">Image Title</div>
+      <div class="lightbox-counter" id="lb-counter">1 of 100</div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="copyright">© <span id="year3"></span> Explore Yatiyantota</div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const galleryGrid = document.getElementById('gallery-grid');
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lb-img');
+      const lbTitle = document.getElementById('lb-title');
+      const lbCounter = document.getElementById('lb-counter');
+      const lbClose = document.querySelector('.lb-close');
+      const lbPrev = document.querySelector('.lb-prev');
+      const lbNext = document.querySelector('.lb-next');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+
+const images = [
+    {
+      src: "image/Bridge on River Kuwai/WhatsApp Image 2025-10-03 at 09.39.40_0a0eba00.jpg",
+      title: "Bridge on River Kuwai",
+      location: "River Kuwai",
+      category: "nature"
+    },
+    {
+      src: "image/Bridge on River Kuwai/WhatsApp Image 2025-10-03 at 09.39.40_36f55a35.jpg",
+      title: "Scenic River View",
+      location: "River Kuwai",
+      category: "nature"
+    },
+    {
+      src: "image/Bridge on River Kuwai/WhatsApp Image 2025-10-03 at 09.39.40_f26d9054.jpg",
+      title: "Ancient Bridge",
+      location: "River Kuwai",
+      category: "nature"
+    },
+    {
+      src: "image/Hadun Ella/WhatsApp Image 2025-10-03 at 09.40.07_22bb5770.jpg",
+      title: "Hadun Ella Waterfall",
+      location: "Hadun Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Hadun Ella/WhatsApp Image 2025-10-03 at 09.40.07_a5ee8152.jpg",
+      title: "Waterfall Beauty",
+      location: "Hadun Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Hadun Ella/WhatsApp Image 2025-10-03 at 09.40.08_3d3e66ca.jpg",
+      title: "Natural Pool",
+      location: "Hadun Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Kabulumulla Sri Rajamaha Paththini Devalaya/WhatsApp Image 2025-10-03 at 09.46.00_b5f67020.jpg",
+      title: "Ancient Temple",
+      location: "Kabulumulla",
+      category: "temples"
+    },
+    {
+      src: "image/Kabulumulla Sri Rajamaha Paththini Devalaya/WhatsApp Image 2025-10-03 at 09.46.01_7e3f4866.jpg",
+      title: "Temple Architecture",
+      location: "Kabulumulla",
+      category: "temples"
+    },
+    {
+      src: "image/Kabulumulla Sri Rajamaha Paththini Devalaya/WhatsApp Image 2025-10-03 at 09.46.01_d95c99c2.jpg",
+      title: "Sacred Site",
+      location: "Kabulumulla",
+      category: "temples"
+    },
+    {
+      src: "image/Kalukohuthanna Hanging Bridge/WhatsApp Image 2025-10-03 at 09.51.26_8fc89a38.jpg",
+      title: "Hanging Bridge",
+      location: "Kalukohuthanna",
+      category: "adventure"
+    },
+    {
+      src: "image/Kalukohuthanna Hanging Bridge/WhatsApp Image 2025-10-03 at 09.51.27_17be6ccb.jpg",
+      title: "Bridge Adventure",
+      location: "Kalukohuthanna",
+      category: "adventure"
+    },
+    {
+      src: "image/Kalukohuthanna Hanging Bridge/WhatsApp Image 2025-10-03 at 09.51.27_fae95be3.jpg",
+      title: "Suspended Pathway",
+      location: "Kalukohuthanna",
+      category: "adventure"
+    },
+    {
+      src: "image/Kalukohuthanna Hanging Bridge/WhatsApp Image 2025-10-03 at 09.51.28_382199d6.jpg",
+      title: "Forest Crossing",
+      location: "Kalukohuthanna",
+      category: "adventure"
+    },
+    {
+      src: "image/Kandukale Buddhist Green City/WhatsApp Image 2025-10-03 at 12.29.31_6c5c0c5e.jpg",
+      title: "Kandukale Buddhist Green City",
+      location: "Kandukale",
+      category: "temples"
+    },
+    {
+      src: "image/Kandukale Buddhist Green City/WhatsApp Image 2025-10-03 at 12.29.31_033dd60a.jpg",
+      title: "Serene Buddhist City",
+      location: "Kandukale",
+      category: "temples"
+    },
+    {
+      src: "image/Kandukale Buddhist Green City/WhatsApp Image 2025-10-03 at 12.29.32_471bd80a.jpg",
+      title: "Green City Pathway",
+      location: "Kandukale",
+      category: "temples"
+    },
+    {
+      src: "image/Kandukale Buddhist Green City/WhatsApp Image 2025-10-03 at 12.29.32_986508a3.jpg",
+      title: "Monastery Grounds",
+      location: "Kandukale",
+      category: "temples"
+    },
+    {
+      src: "image/Kataran Oya/WhatsApp Image 2025-10-03 at 11.02.22_1c889eac.jpg",
+      title: "Kataran Oya River",
+      location: "Kataran Oya",
+      category: "nature"
+    },
+    {
+      src: "image/Kataran Oya/WhatsApp Image 2025-10-03 at 11.02.22_3e9f3342.jpg",
+      title: "Riverbed View",
+      location: "Kataran Oya",
+      category: "nature"
+    },
+    {
+      src: "image/Kataran Oya/WhatsApp Image 2025-10-03 at 11.02.23_4033d448.jpg",
+      title: "Calm Waters",
+      location: "Kataran Oya",
+      category: "nature"
+    },
+    {
+      src: "image/Kataran Oya/WhatsApp Image 2025-10-03 at 11.02.23_6478472e.jpg",
+      title: "Riverbank Scenery",
+      location: "Kataran Oya",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.22_7c038091.jpg",
+      title: "Kithulgala Beli Lena Cave Entrance",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.23_4fe30302.jpg",
+      title: "Cave Interior",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.23_7f53c8bd.jpg",
+      title: "Ancient Cave Formations",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.23_f15a8fe4.jpg",
+      title: "Cave Viewpoint",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.24_1d982f3c.jpg",
+      title: "Inside Beli Lena",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.24_5e40e2ed.jpg",
+      title: "Cave Entrance Pathway",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.24_5ed36ae7.jpg",
+      title: "Rock Formations",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.24_675a4b17.jpg",
+      title: "Cave Walkway",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala Beli Lena Cave/WhatsApp Image 2025-10-03 at 11.06.25_e829abd2.jpg",
+      title: "Beli Lena Cave",
+      location: "Kithulgala",
+      category: "nature"
+    },
+    {
+      src: "image/Kithulgala White water Rafting/WhatsApp Image 2025-10-03 at 11.10.18_154c99d5.jpg",
+      title: "White Water Rafting",
+      location: "Kithulgala",
+      category: "adventure"
+    },
+    {
+      src: "image/Kithulgala White water Rafting/WhatsApp Image 2025-10-03 at 11.10.19_8b354de6.jpg",
+      title: "Rafting Thrills",
+      location: "Kithulgala",
+      category: "adventure"
+    },
+    {
+      src: "image/Kithulgala White water Rafting/WhatsApp Image 2025-10-03 at 11.10.19_ae0edb3f.jpg",
+      title: "Rapid Ride",
+      location: "Kithulgala",
+      category: "adventure"
+    },
+    {
+      src: "image/Kithulgala White water Rafting/WhatsApp Image 2025-10-03 at 11.10.19_f560f5ff.jpg",
+      title: "Adventure on the River",
+      location: "Kithulgala",
+      category: "adventure"
+    },
+    {
+      src: "image/Kithulgala White water Rafting/WhatsApp Image 2025-10-03 at 11.10.20_64da8601.jpg",
+      title: "Team Rafting",
+      location: "Kithulgala",
+      category: "adventure"
+    },
+    {
+      src: "image/Kithulgala White water Rafting/WhatsApp Image 2025-10-03 at 11.10.20_74adb307.jpg",
+      title: "Navigating Rapids",
+      location: "Kithulgala",
+      category: "adventure"
+    },
+    {
+      src: "image/Kithulgala White water Rafting/WhatsApp Image 2025-10-03 at 11.10.20_c7013976.jpg",
+      title: "River Rafting Fun",
+      location: "Kithulgala",
+      category: "adventure"
+    },
+    {
+      src: "image/Makandawa rain Forest/WhatsApp Image 2025-10-03 at 11.17.50_0f36c0a9.jpg",
+      title: "Makandawa Rainforest",
+      location: "Makandawa",
+      category: "nature"
+    },
+    {
+      src: "image/Makandawa rain Forest/WhatsApp Image 2025-10-03 at 11.17.51_6c12e27f.jpg",
+      title: "Forest Canopy",
+      location: "Makandawa",
+      category: "nature"
+    },
+    {
+      src: "image/Makandawa rain Forest/WhatsApp Image 2025-10-03 at 11.17.51_8dd39aec.jpg",
+      title: "Rainforest Trail",
+      location: "Makandawa",
+      category: "nature"
+    },
+    {
+      src: "image/Makandawa rain Forest/WhatsApp Image 2025-10-03 at 11.17.51_5765ae51.jpg",
+      title: "Lush Greenery",
+      location: "Makandawa",
+      category: "nature"
+    },
+    {
+      src: "image/Makandawa rain Forest/WhatsApp Image 2025-10-03 at 11.17.51_e19422d5.jpg",
+      title: "Jungle Pathway",
+      location: "Makandawa",
+      category: "nature"
+    },
+    {
+      src: "image/Maligathenna View point/WhatsApp Image 2025-10-03 at 11.42.53_89023950.jpg",
+      title: "Maligathenna Viewpoint",
+      location: "Maligathenna",
+      category: "nature"
+    },
+    {
+      src: "image/Maligathenna View point/WhatsApp Image 2025-10-03 at 11.42.53_c8119c03.jpg",
+      title: "Panoramic View",
+      location: "Maligathenna",
+      category: "nature"
+    },
+    {
+      src: "image/Maligathenna View point/WhatsApp Image 2025-10-03 at 11.42.53_d09649f9.jpg",
+      title: "Mountain Vista",
+      location: "Maligathenna",
+      category: "nature"
+    },
+    {
+      src: "image/Maligathenna View point/WhatsApp Image 2025-10-03 at 11.42.54_257ef89e.jpg",
+      title: "Valley View",
+      location: "Maligathenna",
+      category: "nature"
+    },
+    {
+      src: "image/Maligathenna View point/WhatsApp Image 2025-10-03 at 11.42.54_7692d52c.jpg",
+      title: "Mist over the Hills",
+      location: "Maligathenna",
+      category: "nature"
+    },
+    {
+      src: "image/Maligathenna View point/WhatsApp Image 2025-10-03 at 11.42.54_e41b589b.jpg",
+      title: "Scenic Landscape",
+      location: "Maligathenna",
+      category: "nature"
+    },
+    {
+      src: "image/Maligathenna View point/WhatsApp Image 2025-10-03 at 11.42.55_7bfe2d99.jpg",
+      title: "View from the Top",
+      location: "Maligathenna",
+      category: "nature"
+    },
+    {
+      src: "image/Mannakathi ella/WhatsApp Image 2025-10-03 at 11.31.56_9faa5f6e.jpg",
+      title: "Mannakathi Waterfall",
+      location: "Mannakathi Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Mannakathi ella/WhatsApp Image 2025-10-03 at 11.31.56_b1b303b9.jpg",
+      title: "Cascading Waters",
+      location: "Mannakathi Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Mannakathi ella/WhatsApp Image 2025-10-03 at 11.31.56_c11cfca4.jpg",
+      title: "Waterfall and Rocks",
+      location: "Mannakathi Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Mannakathi ella/WhatsApp Image 2025-10-03 at 11.31.57_1c76625d.jpg",
+      title: "Nature's Flow",
+      location: "Mannakathi Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Mannakathi ella/WhatsApp Image 2025-10-03 at 11.31.57_04d85f9b.jpg",
+      title: "Hidden Waterfall",
+      location: "Mannakathi Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Mannakathi ella/WhatsApp Image 2025-10-03 at 11.31.57_08a08500.jpg",
+      title: "Refreshing Falls",
+      location: "Mannakathi Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.01_17947358.jpg",
+      title: "Olu Ella Waterfall",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.01_e9bf2339.jpg",
+      title: "Long Waterfall",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.02_b09645d1.jpg",
+      title: "Forest Waterfall",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.02_c83bc96e.jpg",
+      title: "Flowing Waterfall",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.02_ea95573f.jpg",
+      title: "Waterfall in the Jungle",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.03_6505e9fe.jpg",
+      title: "Waterfall Pool",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.03_e91921b8.jpg",
+      title: "Rushing Water",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.04_91b927b0.jpg",
+      title: "Small Stream",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.04_9972b425.jpg",
+      title: "Waterfalls and Foliage",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.05_1e9ea992.jpg",
+      title: "River and Waterfall",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.05_4ba89cba.jpg",
+      title: "Beautiful Falls",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.05_9d4a6faf.jpg",
+      title: "Waterfall Path",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.06_3ecae6a3.jpg",
+      title: "Olu Ella View",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/Olu Ella/WhatsApp Image 2025-10-03 at 11.37.06_fb6d2814.jpg",
+      title: "Waterfall Scene",
+      location: "Olu Ella",
+      category: "waterfalls"
+    },
+    {
+      src: "image/The Natural Swimming pool of Theppakulam/WhatsApp Image 2025-10-03 at 11.57.50_f7f653dd.jpg",
+      title: "Theppakulam Natural Pool",
+      location: "Theppakulam",
+      category: "nature"
+    },
+    {
+      src: "image/The Natural Swimming pool of Theppakulam/WhatsApp Image 2025-10-03 at 11.57.52_49d95879.jpg",
+      title: "Swimming Spot",
+      location: "Theppakulam",
+      category: "nature"
+    },
+    {
+      src: "image/The Natural Swimming pool of Theppakulam/WhatsApp Image 2025-10-03 at 11.57.52_11302520.jpg",
+      title: "Riverside Pool",
+      location: "Theppakulam",
+      category: "nature"
+    },
+    {
+      src: "image/The Natural Swimming pool of Theppakulam/WhatsApp Image 2025-10-03 at 11.57.53_5a6bad89.jpg",
+      title: "Natural Water Spot",
+      location: "Theppakulam",
+      category: "nature"
+    },
+    {
+      src: "image/Weoya river Bathing Spot/WhatsApp Image 2025-10-03 at 12.04.14_8e42305f.jpg",
+      title: "Weoya River Bathing Spot",
+      location: "Weoya",
+      category: "nature"
+    },
+    {
+      src: "image/Weoya river Bathing Spot/WhatsApp Image 2025-10-03 at 12.04.14_add91f8c.jpg",
+      title: "River Bathing",
+      location: "Weoya",
+      category: "nature"
+    },
+    {
+      src: "image/Weoya river Bathing Spot/WhatsApp Image 2025-10-03 at 12.04.14_d4139f63.jpg",
+      title: "Calm River",
+      location: "Weoya",
+      category: "nature"
+    },
+    {
+      src: "image/Weoya river Bathing Spot/WhatsApp Image 2025-10-03 at 12.04.15_7874fb6f.jpg",
+      title: "Weoya River Scene",
+      location: "Weoya",
+      category: "nature"
+    },
+    {
+      src: "image/Wewelthalawa Mini World's end/WhatsApp Image 2025-10-03 at 12.10.51_3bb2e254.jpg",
+      title: "Wewelthalawa Mini World's End",
+      location: "Wewelthalawa",
+      category: "nature"
+    },
+    {
+      src: "image/Wewelthalawa Mini World's end/WhatsApp Image 2025-10-03 at 12.10.51_9c4a62dd.jpg",
+      title: "Mini World's End View",
+      location: "Wewelthalawa",
+      category: "nature"
+    },
+    {
+      src: "image/Wewelthalawa Mini World's end/WhatsApp Image 2025-10-03 at 12.10.51_5740b89a.jpg",
+      title: "Cloudy Viewpoint",
+      location: "Wewelthalawa",
+      category: "nature"
+    },
+    {
+      src: "image/Wewelthalawa Mini World's end/WhatsApp Image 2025-10-03 at 12.10.52_a3a88d17.jpg",
+      title: "Scenic Cliff",
+      location: "Wewelthalawa",
+      category: "nature"
+    },
+    {
+      src: "image/Wewelthalawa Mini World's end/WhatsApp Image 2025-10-03 at 12.10.52_a0124f83.jpg",
+      title: "Overlook",
+      location: "Wewelthalawa",
+      category: "nature"
+    },
+    {
+      src: "image/Wewelthalawa Mini World's end/WhatsApp Image 2025-10-03 at 12.10.52_d990190f.jpg",
+      title: "Mountain Scenery",
+      location: "Wewelthalawa",
+      category: "nature"
+    },
+    {
+      src: "image/Wewelthalawa Mini World's end/WhatsApp Image 2025-10-03 at 12.10.53_5bc2ba1a.jpg",
+      title: "Mist over the Mountains",
+      location: "Wewelthalawa",
+      category: "nature"
+    }
+];
+
+      let currentImageIndex = 0;
+      let filteredImages = [...images];
+
+      // Create gallery items
+      function createGalleryItems(imagesArray) {
+        galleryGrid.innerHTML = '';
+        imagesArray.forEach((image, index) => {
+          const galleryItem = document.createElement('div');
+          galleryItem.className = 'gallery-item';
+          galleryItem.dataset.category = image.category;
+          galleryItem.dataset.index = index;
+          
+          galleryItem.innerHTML = `
+            <img class="gimg" src="${image.src}" alt="${image.title}" loading="lazy">
+            <div class="image-overlay">
+              <div class="image-title">${image.title}</div>
+              <div class="image-location">
+                <i class="fas fa-map-marker-alt"></i>
+                ${image.location}
+              </div>
+            </div>
+          `;
+          
+          galleryItem.addEventListener('click', () => openLightbox(index, imagesArray));
+          galleryGrid.appendChild(galleryItem);
+        });
+      }
+
+      // Filter functionality
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.dataset.filter;
+          
+          // Update active button
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          if (filter === 'all') {
+            filteredImages = [...images];
+          } else {
+            filteredImages = images.filter(img => img.category === filter);
+          }
+          
+          createGalleryItems(filteredImages);
+        });
+      });
+
+      // Lightbox functionality
+      function openLightbox(index, imagesArray) {
+        currentImageIndex = index;
+        updateLightbox(imagesArray);
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+
+      function updateLightbox(imagesArray) {
+        const currentImage = imagesArray[currentImageIndex];
+        lbImg.src = currentImage.src;
+        lbTitle.textContent = currentImage.title;
+        lbCounter.textContent = `${currentImageIndex + 1} of ${imagesArray.length}`;
+      }
+
+      function showNextImage(imagesArray) {
+        currentImageIndex = (currentImageIndex + 1) % imagesArray.length;
+        updateLightbox(imagesArray);
+      }
+
+      function showPrevImage(imagesArray) {
+        currentImageIndex = (currentImageIndex - 1 + imagesArray.length) % imagesArray.length;
+        updateLightbox(imagesArray);
+      }
+
+      // Event listeners
+      lbClose.addEventListener('click', closeLightbox);
+      lbNext.addEventListener('click', () => showNextImage(filteredImages));
+      lbPrev.addEventListener('click', () => showPrevImage(filteredImages));
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        
+        switch(e.key) {
+          case 'Escape':
+            closeLightbox();
+            break;
+          case 'ArrowRight':
+            showNextImage(filteredImages);
+            break;
+          case 'ArrowLeft':
+            showPrevImage(filteredImages);
+            break;
+        }
+      });
+
+      // Initialize gallery
+      createGalleryItems(images);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Explore Yatiyantota — About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f9f6;
+  color: #333;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* Section Styling */
+.section {
+  padding: 90px 20px;
+  background: linear-gradient(135deg, #f9fffb, #f0fdf4);
+  position: relative;
+}
+
+/* Decorative Background Circles */
+.section::before, .section::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(39, 174, 96, 0.08);
+  z-index: 0;
+}
+.section::before {
+  width: 200px; height: 200px;
+  top: -60px; left: -60px;
+}
+.section::after {
+  width: 300px; height: 300px;
+  bottom: -100px; right: -100px;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Titles */
+.section h1 {
+  font-size: 3rem;
+  text-align: center;
+  color: #1e3d2f;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  animation: fadeDown 1s ease forwards;
+}
+
+.section h1::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 4px;
+  margin: 15px auto 40px;
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  border-radius: 2px;
+}
+
+.lead {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto 60px;
+  animation: fadeUp 1.2s ease forwards;
+}
+
+/* Grid Layout */
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 35px;
+}
+
+/* Cards */
+.two-col > div {
+  background: #fff;
+  border-radius: 14px;
+  padding: 30px 35px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp 1s ease forwards;
+}
+
+.two-col > div:nth-child(1) { animation-delay: 0.2s; }
+.two-col > div:nth-child(2) { animation-delay: 0.4s; }
+.two-col > div:nth-child(3) { animation-delay: 0.6s; }
+.two-col > div:nth-child(4) { animation-delay: 0.8s; }
+.two-col > div:nth-child(5) { animation-delay: 1s; }
+
+.two-col > div:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+}
+
+/* Headings in Cards */
+.two-col h3 {
+  font-size: 1.6rem;
+  color: #27ae60;
+  margin-bottom: 18px;
+  position: relative;
+  font-weight: 600;
+}
+
+.two-col h3::before {
+  content: "❖";
+  color: #2ecc71;
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+/* Paragraphs */
+.two-col p {
+  font-size: 1rem;
+  color: #444;
+  text-align: justify;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section h1 {
+    font-size: 2.2rem;
+  }
+  .lead {
+    font-size: 1.05rem;
+  }
+  .two-col {
+    gap: 25px;
+  }
+}
+  </style>
+
+  <style>
+/* Read More Styling */
+.read-more {
+  position: relative;
+  overflow: hidden;
+  max-height: 140px;   /* only show first part */
+  transition: max-height 0.6s ease;
+}
+
+.read-more.expanded {
+  max-height: 1000px; /* enough space to expand fully */
+}
+
+.read-more-btn {
+  display: inline-block;
+  margin-top: 12px;
+  background: #27ae60;
+  color: #fff;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s;
+}
+
+.read-more-btn:hover {
+  background: #219150;
+}
+
+  </style>
+
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">Explore <span>Yatiyantota</span></a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="attractions.html">Attractions</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html" class="active">About</a>
+        <a href="contact.html" class="btn">Contact</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <h1>About Yatiyantota</h1>
+        <p class="lead">A short history and why this area is special.</p>
+
+        <div class="two-col">
+          <div>
+            <h3>History</h3>
+            <p class="read-more">The history of Yatiyantota DSD is a layered narrative of strategic defense, colonial transformation, and post-independence modernization. As part of the Kandyan Kingdom's outer provinces, known as the Udapasrata, its rugged, forested terrain along the Kelani River served as a natural defensive frontier against invasions from the western lowlands. The area's name, translating to "the ferry where the vessel was moored," underscores its historical role as a vital river crossing point, controlling access to the central highlands. This strategic significance continued into the colonial era, where it became a contested zone. The British colonial administration in the 19th century irrevocably altered the landscape by clearing forests for the establishment of plantation estates, shifting from coffee to the enduring staples of rubber and tea, which required the construction of an extensive network of colonial-era roads and bridges that still underpin the region's infrastructure. A pivotal moment in its modern history was the commissioning of the Yatiyantota Hydroelectric Power Station in 1950, a flagship project of post-independence Ceylon that harnessed the Kelani River's power and symbolized the nation's entry into a new industrial age, bringing technological advancement to a historically agrarian region.</p>
+            <button class="read-more-btn">Read More</button>
+          </div>
+          <div>
+            <h3>Culture & Society</h3>
+            <p class="read-more">The cultural fabric of Yatiyantota is woven from its Sinhalese-Buddhist heritage, deeply influenced by its Kandyan past and agrarian economy. Ancient Buddhist temples, such as the historic Veheragala Rajamaha Viharaya and Dewalegoda Viharaya, are not only places of worship but also custodians of history, preserving ancient statues, inscriptions, and architecture that offer insights into centuries of settlement. These temples are the epicenters of community life, hosting vibrant annual peraheras (traditional processions) that feature skilled traditional drummers (hewisi) and Kandyan dancers, showcasing a living cultural tradition passed down through generations. Village life is closely tied to the rhythms of the plantations and the river, fostering a strong sense of community and collective responsibility, visible in practices like "kamatha" (collective farming efforts). While less prominent today, traditional crafts linked to the plantation and forest environments, such as crafting utensils from local materials and weaving, remain a fading but cherished part of the local cultural identity, alongside unique local culinary traditions that utilize river fish and jungle produce.</p>
+          <button class="read-more-btn">Read More</button>
+          </div>
+          <div>
+            <h3>Economy & Livelihoods</h3>
+            <p class="read-more">The economy of Yatiyantota is a mix of traditional plantation agriculture, smallholder farming, and strategic infrastructure. Rubber and tea remain the dominant commercial crops, with estates and smallholdings providing significant employment, though they are often susceptible to global price fluctuations. Spice cultivation, particularly cinnamon and pepper, serves as an important supplementary income for many families, with small plots integrated into the home gardens of local villagers. The Kelani River is a cornerstone of the local economy, supporting small-scale fishing, providing essential water for agriculture, and being the site of the Yatiyantota Hydroelectric Power Station, a key contributor to the national grid. As a connecting corridor between the hill country and the western plains, the area also benefits from transportation and related services, with many residents engaged in logistics or commuting to nearby urban centers for work. Increasingly, ecotourism presents a growing economic opportunity, with potential for community-based tourism centered around the river, waterfalls, and natural scenery, offering homestays and guided nature walks that provide alternative income streams.</p>
+          <button class="read-more-btn">Read More</button>
+          </div>
+          <div>
+            <h3>Geography & Environment</h3>
+            <p class="read-more">Nestled in the Kegalle District within the Sabaragamuwa Province, Yatiyantota DSD is characterized by a dramatic transition from the central highlands to the western plains. The topography is rugged, featuring rolling hills, steep valleys, and dense forests that are part of the broader wet zone rainforest ecosystem. The Kelani River, one of Sri Lanka's longest and most important rivers, cuts through the division, shaping its ecology and human settlement patterns, with many villages perched on its banks. This riverine environment supports rich biodiversity, including numerous endemic bird species, fish, and reptiles. The climate is typical of the wet zone, with a high annual rainfall that sustains the lush vegetation vital for its tea and rubber plantations. This geography presents both opportunities, such as hydropower and scenic beauty, and significant challenges, including a high risk of landslides on steep, deforested slopes during heavy monsoon rains and frequent flooding in low-lying areas along the river basin.</p>
+          <button class="read-more-btn">Read More</button>
+          </div>
+          <div>
+            <h3>Responsible Travel & Tourism</h3>
+            <p class="read-more">Yatiyantota holds significant potential for sustainable tourism that, if managed responsibly, can contribute to local conservation and community development. Visitors are encouraged to engage local experts by hiring guides from the community for treks to natural attractions like small waterfalls and forest trails, and for river-based activities, which ensures economic benefits reach the community directly and provides more authentic cultural interpretation. Supporting local producers by purchasing fresh produce, spices like cinnamon and pepper, and traditional crafts directly from small-scale farmers and village cooperatives helps sustain the rural economy and preserves traditional knowledge. It is crucial to respect cultural norms by dressing and behaving modestly when visiting temples, and always asking for permission before photographing people or religious ceremonies to avoid intrusion. Minimizing environmental impact is essential; this involves following designated trails to prevent soil erosion and protect fragile ecosystems, and rigorously avoiding single-use plastics to help preserve the pristine nature of the Kelani River environment. Choosing community-run guesthouses or homestays over large commercial hotels not only ensures a more authentic and immersive experience but also guarantees that a greater portion of the tourism revenue directly benefits local families and funds community-led conservation initiatives.</p>
+          <button class="read-more-btn">Read More</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="copyright">© <span id="year5"></span> Explore Yatiyantota</div>
+    </div>
+  </footer>
+<script>
+  document.querySelectorAll('.read-more-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.previousElementSibling;
+      content.classList.toggle('expanded');
+      button.textContent = content.classList.contains('expanded') 
+        ? "Read Less" 
+        : "Read More";
+    });
+  });
+</script>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

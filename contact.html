@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Explore Yatiyantota — Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">Explore <span>Yatiyantota</span></a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="attractions.html">Attractions</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="active btn">Contact</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <h1>Contact & Bookings</h1>
+        <p class="lead">Send an inquiry and we'll reply within 24-48 hours.</p>
+
+        <div class="contact-grid">
+          <form id="contactForm" class="contact-form">
+            <label>
+              <span>Your name</span>
+              <input name="name" type="text" required>
+            </label>
+            <label>
+              <span>Email</span>
+              <input name="email" type="email" required>
+            </label>
+            <label>
+              <span>Message</span>
+              <textarea name="message" rows="6" required></textarea>
+            </label>
+            <button class="btn" type="submit">Send message</button>
+          </form>
+
+          <aside class="contact-info">
+            <h3>Visit or call</h3>
+            <p class="muted">info@yatiyantota.com<br>+94 71 234 5678</p>
+
+            <h3>Location</h3>
+            <!-- Replace the src with an actual Google Maps embed link if you like -->
+            <div class="map">
+              <iframe style="width:100%;height:220px;border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5418.989478910465!2d80.29564975!3d7.028969699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae30889af3e2557%3A0x8e5bb18ad849d0f3!2sYatiyanthota!5e1!3m2!1sen!2slk!4v1759492102419!5m2!1sen!2slk"></iframe>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="copyright">© <span id="year6"></span> Explore Yatiyantota</div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
